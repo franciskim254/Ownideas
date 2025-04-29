@@ -47,7 +47,7 @@ vector<vector<int>> testCases = {
     for (int i = 0; i < testCases.size(); i++) {
         cout << "Test case " << i + 1 << ": ";
         for (int num : testCases[i]) cout << num << " ";
-        cout << "\n→ Classification: " << classifyPattern(testCases[i]) << "\n\n";
+        cout << "\n Classification: " << classifyPattern(testCases[i]) << "\n\n";
     }
 	return 0;
 }

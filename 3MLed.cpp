@@ -8,16 +8,15 @@ int State = 0;
 int currentState = 0;
 int buttonState = 0;
 int prevButtonState = 0;
-bool buttonPressed = false;
-unsigned long currentTime;
-unsigned long pressTime;
+bool ledOn = false;
+unsigned long pressTime=0;
 
 void ledBlink(int delay ){
-	pressTime=currentTime;
-	digitalWrite(ledPin, HIGH);
 	if(currentTime - pressTime >= delay){
-		digitalWrite(ledPin, LOW);
+		ledOn=!ledOn;
+		digitalWrite(ledPin, ledOn);
 	}
+	pressTime=currentTime;
 }
 
 void setup(){
@@ -27,27 +26,30 @@ void setup(){
 }
 
 void loop(){
-	currentTime=millis();
+	unsigned long currentTime = millis();
 	buttonState= digitalRead(buttonPin);
 	if(buttonState==HIGH && prevButtonState== LOW ){
-		buttonPressed=!buttonPressed;
 		State = (currentState+1)%3;
 		prevButtonState=buttonState;
+		delay(200);
 	}else if (buttonState==LOW && prevButtonState== HIGH){
-		buttonPressed=!buttonPressed;
 		State = (currentState+1)&3;
 		prevButtonState=buttonState;
+		delay(200);
 	}
 
 	switch (State){
 	case 0: 
-			ledBlink(2000);
+			ledBlink(1000);
+			break;
 
 	case 1: 
-			ledBlink(1000);
+			ledBlink(250);
+			break;
 
 	case 2:
-			ledBlink(500);
+			digitalWrite(ledPin, HIGH);
+			break;
 	}
 
 }
