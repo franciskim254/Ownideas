@@ -1,22 +1,22 @@
 // this is my attempt at a 3 mode led system
-#include <Arduino.h>
 
-const int buttonPin = 3;
-const int ledPin = 2;
+const int buttonPin = 2;
+const int ledPin = 3;
 
 int State = 0;
-int currentState = 0;
 int buttonState = 0;
 int prevButtonState = 0;
 bool ledOn = false;
 unsigned long pressTime=0;
+unsigned long currentTime = 0;
 
 void ledBlink(int delay ){
 	if(currentTime - pressTime >= delay){
 		ledOn=!ledOn;
 		digitalWrite(ledPin, ledOn);
+		pressTime = currentTime;
 	}
-	pressTime=currentTime;
+	
 }
 
 void setup(){
@@ -26,17 +26,14 @@ void setup(){
 }
 
 void loop(){
-	unsigned long currentTime = millis();
+	currentTime = millis();
 	buttonState= digitalRead(buttonPin);
 	if(buttonState==HIGH && prevButtonState== LOW ){
-		State = (currentState+1)%3;
+		State = (State+1)%3;
+  	delay(200);
+  }
 		prevButtonState=buttonState;
-		delay(200);
-	}else if (buttonState==LOW && prevButtonState== HIGH){
-		State = (currentState+1)&3;
-		prevButtonState=buttonState;
-		delay(200);
-	}
+
 
 	switch (State){
 	case 0: 
